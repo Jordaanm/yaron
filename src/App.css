@@ -1,0 +1,15 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+  height: 80vh;
+  --actionColor: orange;
+  --activeColor: goldenRod;
+  --eliminatedColor: red;
+}
+
+.hidden {
+  display: none;
+}

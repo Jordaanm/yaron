@@ -1,0 +1,105 @@
+.hero-card {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: flex;
+  margin: 10px;
+  padding: 10px;
+  height: 100px;
+  /* Add a drop shadow */
+  box-shadow: 5px 5px 5px 2px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.hero-card:not(.editable) {
+  cursor: pointer;
+}
+
+
+.hero-card .profile-image-container {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 100px;
+  margin-right: 10px;
+  overflow: hidden;
+  width: 100px;
+  background-color: #999;
+  color: #fff;
+}
+
+.hero-card[data-eliminated="true"] {
+  background-color: var(--eliminatedColor);
+}
+
+.hero-card .profile-image-container img {
+  height: 100%;
+  width: 100%;
+}
+
+.hero-card.editable .profile-image-container {
+  cursor: pointer;
+  border: 2px solid var(--activeColor);
+}
+
+.hero-card .info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  overflow: hidden;
+  flex: 1;
+}
+
+.hero-card .info .name, 
+.hero-card .info .name input {
+  margin: 0;
+  font-size: 2rem;
+  max-width: 80%;
+}
+
+.hero-card .info .team, 
+.hero-card .info .team input {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #666;
+  max-width: 80%;
+}
+
+.hero-card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.hero-card-grid .hero-card {
+  flex: 0 0 25%;
+  max-width: 25%;
+}
+
+.hero-card button.remove {
+  border: 2px solid;
+  border-radius: 50%;
+  height: 2.5rem;
+  width: 2.5rem;
+  padding: 0.5rem;
+
+}
+
+
+.hero-card button.remove  {
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+  padding: 1rem;
+  border-radius: 50%;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.5);
+  background-color: var(--eliminatedColor);
+  background-image: url(../delete.png);
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat; 
+
+  position: absolute;
+  top: calc(50% - 1rem);
+  right: -1rem;
+}

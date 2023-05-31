@@ -1,0 +1,34 @@
+.stopwatch .timer-display {
+  font-size: 4rem;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.stopwatch button {
+  margin: 1rem;
+  border: 1px solid #ccc;
+}
+
+.stopwatch-settings .content{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-direction: column;
+}
+
+.stopwatch-settings .form {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  width: 100%;
+  flex-direction: column;
+}
+
+.stopwatch-settings .form input {
+  margin-left: 1rem;
+}
+
