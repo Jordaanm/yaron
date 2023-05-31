@@ -3,7 +3,7 @@
 }
 .competitors .title-row {
     display: flex;
-    font-size: 5rem;
+    font-size: 2rem;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
