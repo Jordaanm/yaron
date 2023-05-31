@@ -5,7 +5,7 @@ import { Stopwatch } from './Stopwatch'
 function App() {
   return (
     <>
-      <Stopwatch initialDuration={60} alarmUrl='/beep.wav'/>
+      <Stopwatch />
       <Competitors />
     </>
   )
