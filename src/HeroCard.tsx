@@ -13,7 +13,7 @@ export const HeroCard = (props: HeroCardProps) => {
   return (
     <div className="hero-card" data-eliminated={isEliminated} onClick={onClick}>
       <div className="profile-image-container">
-        <img src={hero.profileImage || '/placeholder.png'} alt={hero.name} />
+        <img src={hero.profileImage || 'placeholder.png'} alt={hero.name} />
       </div>
       <div className="info">
         <h2 className="name">{hero.name}</h2>
