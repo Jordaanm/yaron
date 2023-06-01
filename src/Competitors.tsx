@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import { Hero } from "./types";
 import { HeroCard, HeroCardEditable } from "./HeroCard";
 
 import './Competitors.css';
+import { TimerContext } from "./contexts/timer-context";
 const NewHeroTemplate: Hero = {
   name: 'Name',
   team: 'Team',
@@ -16,7 +17,8 @@ const saveCompetitorsToLocalStorage = (competitors: Hero[]) => {
 export const Competitors = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [competitors, setCompetitors] = useState<Hero[]>([]);
-  const [eliminated, setEliminated] = useState<string[]>([]);
+  const [eliminated, setEliminated] = useState<Map<string, number>>(new Map<string, number>());
+  const { duration } = useContext(TimerContext);
 
   useEffect(() => {
     const competitorsFromLocalStorageStr = localStorage.getItem('competitors');
@@ -30,12 +32,15 @@ export const Competitors = () => {
 
   
   const toggleEliminated = useCallback((name: string) => {
-    if(eliminated.includes(name)) {
-      setEliminated(eliminated => eliminated.filter(eliminatedName => eliminatedName !== name));
+    if(eliminated.has(name)) {
+      eliminated.delete(name);
+      
+      setEliminated(new Map(eliminated));
     } else {
-      setEliminated(eliminated => [...eliminated, name]);
+      eliminated.set(name, duration);
+      setEliminated(new Map(eliminated));
     }
-  }, [eliminated]);
+  }, [eliminated, duration]);
 
   const toggleIsEditing = () => {
     setIsEditing(isEditing => !isEditing);
@@ -85,7 +90,7 @@ export const Competitors = () => {
               onRemove={() => removeCompetitor(index)}
             />;
           } else {
-            return <HeroCard key={`${hero.name}-${index}`} hero={hero} isEliminated={eliminated.includes(hero.name)} onClick={() => toggleEliminated(hero.name)} />
+            return <HeroCard key={`${hero.name}-${index}`} hero={hero} isEliminated={eliminated.has(hero.name)} elimTime={eliminated.get(hero.name)} onClick={() => toggleEliminated(hero.name)} />
           }
         })}
         {isEditing && <div className="add-new-wrapper">

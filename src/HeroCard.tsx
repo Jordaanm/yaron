@@ -1,15 +1,17 @@
 import { Hero } from './types';
 import './HeroCard.css';
 import { useState } from 'react';
+import { formatTime } from './Stopwatch';
 
 interface HeroCardProps {
   hero: Hero;
   isEliminated: boolean;
+  elimTime?: number;
   onClick?: () => void;
 }
 
 export const HeroCard = (props: HeroCardProps) => {
-  const { hero, isEliminated, onClick } = props;
+  const { hero, isEliminated, elimTime, onClick } = props;
   return (
     <div className="hero-card" data-eliminated={isEliminated} onClick={onClick}>
       <div className="profile-image-container">
@@ -18,6 +20,7 @@ export const HeroCard = (props: HeroCardProps) => {
       <div className="info">
         <h2 className="name">{hero.name}</h2>
         <h3 className="team">{hero.team}</h3>
+        <h3 className='elim'>{isEliminated  ? `Time: ${formatTime(elimTime || 0)}` : ''}</h3>
       </div>
     </div>
   );
@@ -88,6 +91,7 @@ export const HeroCardEditable = (props: HeroCardEditableProps) => {
       <div className="info">
         <h2 className="name"><input onChange={onNameChange} onBlur={saveName} value={name}/></h2>
         <h3 className="team"><input onChange={onTeamChange} onBlur={saveTeam} value={team}/></h3>
+        <h3 className='elim'></h3>
       </div>
       <button className="remove" onClick={onRemove}></button>
     </div>

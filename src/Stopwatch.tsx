@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 import './Stopwatch.css';
+import { TimerContext } from './contexts/timer-context';
 
 interface StopwatchSettings {
   beepUrl: string;
@@ -13,11 +14,11 @@ const saveStopwatchSettingsToLocalStorage = (settings: StopwatchSettings) => {
 }
 
 export const Stopwatch = () => {
+  const { duration, setDuration } = useContext(TimerContext);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [beepUrl, setBeepUrl] = useState('/beep.wav');
   const [beepInterval, setBeepInterval] = useState(60);
   const [initialDuration, setInitialDuration] = useState(1800);
-  const [duration, setDuration] = useState(initialDuration);
   const [isRunning, setIsRunning] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -25,13 +26,23 @@ export const Stopwatch = () => {
     setIsRunning(true);
   }
 
-  const stop = () => {
+  const stop = useCallback(() => {
     setIsRunning(false);
-  }
+  }, [setIsRunning])
 
   const reset = () => {
     setDuration(initialDuration);
   }
+
+  const updateSettings = useCallback((settings: StopwatchSettings) => {
+    setInitialDuration(settings.initialDuration);
+    setDuration(settings.initialDuration);
+    setBeepInterval(settings.beepInterval);
+    setBeepUrl(settings.beepUrl);
+    setIsRunning(false);
+    setIsDialogOpen(false);
+    saveStopwatchSettingsToLocalStorage(settings);
+  }, [setDuration]);
 
   useEffect(() => {
     const stopwatchFromLocalStorageStr = localStorage.getItem('stopwatch');
@@ -45,8 +56,9 @@ export const Stopwatch = () => {
         initialDuration
       });
     }
+    setInitialDuration(initialDuration);
     setTimeout(() => { setHasLoaded(true); }, 100);
-  }, [beepInterval, beepUrl, initialDuration]);
+  }, [beepInterval, beepUrl, initialDuration, updateSettings]);
 
   useEffect(() => {
     const tick = () => {
@@ -62,26 +74,16 @@ export const Stopwatch = () => {
           setDuration(0);
           stop();
         } else {
-          setDuration(duration => duration - 1);
+          setDuration(duration - 1);
         }
       }
     }
     const timerId = setInterval(tick, 1000);
     return () => clearInterval(timerId);
-  }, [isRunning, duration, beepInterval, beepUrl]);
+  }, [isRunning, duration, beepInterval, beepUrl, setDuration, stop]);
 
   const durationDisplay = formatTime(duration);
 
-  const updateSettings = (settings: StopwatchSettings) => {
-    console.log("Update Settings", settings);
-    setInitialDuration(settings.initialDuration);
-    setDuration(settings.initialDuration);
-    setBeepInterval(settings.beepInterval);
-    setBeepUrl(settings.beepUrl);
-    setIsRunning(false);
-    setIsDialogOpen(false);
-    saveStopwatchSettingsToLocalStorage(settings);
-  }
 
   if(!hasLoaded) {
     return <div className='stopwatch'>Loading...</div>
@@ -110,7 +112,7 @@ export const Stopwatch = () => {
   );
 }
 
-const formatTime = (duration: number) => {
+export const formatTime = (duration: number) => {
   const minutes = Math.floor(duration / 60);
   const seconds = duration % 60;
   const minutesDisplay = minutes < 10 ? `0${minutes}` : minutes;

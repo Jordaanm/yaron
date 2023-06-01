@@ -52,17 +52,23 @@
 .hero-card .info .name, 
 .hero-card .info .name input {
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.8rem;
   max-width: 80%;
 }
 
 .hero-card .info .team, 
 .hero-card .info .team input {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: #666;
   max-width: 80%;
 }
+
+.hero-card .info .elim {
+  margin: 0;
+  font-size: 1.2rem;
+} 
+
 
 .hero-card-grid {
   display: flex;
