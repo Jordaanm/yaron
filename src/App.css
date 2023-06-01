@@ -7,7 +7,7 @@
   height: 80vh;
   --actionColor: orange;
   --activeColor: goldenRod;
-  --eliminatedColor: red;
+  --eliminatedColor: rgb(180, 40, 40);
 }
 
 .hidden {

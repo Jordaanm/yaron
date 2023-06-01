@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
 import './Stopwatch.css';
 import { TimerContext } from './contexts/timer-context';
+import { formatTime } from './util';
 
 interface StopwatchSettings {
   beepUrl: string;
@@ -18,7 +19,7 @@ export const Stopwatch = () => {
   const [hasLoaded, setHasLoaded] = useState(false);
   const [beepUrl, setBeepUrl] = useState('/beep.wav');
   const [beepInterval, setBeepInterval] = useState(60);
-  const [initialDuration, setInitialDuration] = useState(1800);
+  const [maxTime, setMaxTime] = useState(1800);
   const [isRunning, setIsRunning] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -31,12 +32,12 @@ export const Stopwatch = () => {
   }, [setIsRunning])
 
   const reset = () => {
-    setDuration(initialDuration);
+    setDuration(0);
   }
 
   const updateSettings = useCallback((settings: StopwatchSettings) => {
-    setInitialDuration(settings.initialDuration);
-    setDuration(settings.initialDuration);
+    setMaxTime(settings.initialDuration);
+    setDuration(0);
     setBeepInterval(settings.beepInterval);
     setBeepUrl(settings.beepUrl);
     setIsRunning(false);
@@ -53,34 +54,35 @@ export const Stopwatch = () => {
       saveStopwatchSettingsToLocalStorage({
         beepUrl,
         beepInterval,
-        initialDuration
+        initialDuration: maxTime
       });
     }
-    setInitialDuration(initialDuration);
-    setTimeout(() => { setHasLoaded(true); }, 100);
-  }, [beepInterval, beepUrl, initialDuration, updateSettings]);
+    setTimeout(() => { 
+      setHasLoaded(true); 
+    }, 100);
+  }, [beepInterval, beepUrl, maxTime, updateSettings]);
 
   useEffect(() => {
     const tick = () => {
       if (isRunning) {
-        const newDuration = duration - 1;
+        const newDuration = duration + 1;
         if(newDuration % beepInterval == 0) {
           if(beepUrl) {
             playAlarm(beepUrl);
           }
         }
         
-        if(newDuration <= 0) {
+        if(newDuration > maxTime) {
           setDuration(0);
           stop();
         } else {
-          setDuration(duration - 1);
+          setDuration(duration + 1);
         }
       }
     }
     const timerId = setInterval(tick, 1000);
     return () => clearInterval(timerId);
-  }, [isRunning, duration, beepInterval, beepUrl, setDuration, stop]);
+  }, [isRunning, duration, beepInterval, beepUrl, setDuration, stop, maxTime]);
 
   const durationDisplay = formatTime(duration);
 
@@ -97,28 +99,21 @@ export const Stopwatch = () => {
         <button onClick={stop}>Pause</button>
         <button onClick={reset}>Reset</button>
         <button className="settings" onClick={() => setIsDialogOpen(true)}>Settings</button>
-        <StopwatchSettings
-          isOpen={isDialogOpen}
-          onClose={() => setIsDialogOpen(false)}
-          onSave={updateSettings}
-          {...{
-            beepUrl,
-            beepInterval,
-            initialDuration
-          }}
-        />
       </div>
+      <StopwatchSettings
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onSave={updateSettings}
+        {...{
+          beepUrl,
+          beepInterval,
+          initialDuration: maxTime
+        }}
+      />
     </div>
   );
 }
 
-export const formatTime = (duration: number) => {
-  const minutes = Math.floor(duration / 60);
-  const seconds = duration % 60;
-  const minutesDisplay = minutes < 10 ? `0${minutes}` : minutes;
-  const secondsDisplay = seconds < 10 ? `0${seconds}` : seconds;
-  return `${minutesDisplay}:${secondsDisplay}`;
-}
 
 const playAlarm = (alarmUrl: string) => {
   console.log("Play Alarm", alarmUrl);

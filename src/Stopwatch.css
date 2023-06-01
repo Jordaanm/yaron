@@ -11,7 +11,12 @@
   border: 1px solid #ccc;
 }
 
+.stopwatch-settings {
+  z-index: 10;
+}
 .stopwatch-settings .content{
+  z-index: 10;
+  background-color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -32,3 +37,21 @@
   margin-left: 1rem;
 }
 
+@media screen and (orientation: landscape) {
+  .stopwatch {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .stopwatch .timer-display {
+    flex: 3;
+  }
+
+  .stopwatch .controls {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: 10rem;
+    flex: 1;
+  }
+}

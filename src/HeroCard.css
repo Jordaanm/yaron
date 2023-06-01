@@ -28,6 +28,11 @@
 
 .hero-card[data-eliminated="true"] {
   background-color: var(--eliminatedColor);
+  color: white;
+}
+
+.hero-card[data-eliminated="true"] .info .team {
+  color: white;
 }
 
 .hero-card .profile-image-container img {

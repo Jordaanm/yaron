@@ -1,7 +1,7 @@
 import { Hero } from './types';
 import './HeroCard.css';
 import { useState } from 'react';
-import { formatTime } from './Stopwatch';
+import { formatTime } from './util';
 
 interface HeroCardProps {
   hero: Hero;
@@ -20,7 +20,7 @@ export const HeroCard = (props: HeroCardProps) => {
       <div className="info">
         <h2 className="name">{hero.name}</h2>
         <h3 className="team">{hero.team}</h3>
-        <h3 className='elim'>{isEliminated  ? `Time: ${formatTime(elimTime || 0)}` : ''}</h3>
+        <h3 className='elim'>{isEliminated  ? `Time: ${formatTime(elimTime || 0)}` : '_'}</h3>
       </div>
     </div>
   );

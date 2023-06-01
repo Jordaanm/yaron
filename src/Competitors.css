@@ -3,10 +3,10 @@
 }
 .competitors .title-row {
     display: flex;
-    font-size: 2rem;
-    justify-content: space-between;
+    font-size: 1rem;
+    text-transform: uppercase;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
 }
 
 .competitors .title {
