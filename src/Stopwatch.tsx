@@ -17,7 +17,7 @@ const saveStopwatchSettingsToLocalStorage = (settings: StopwatchSettings) => {
 export const Stopwatch = () => {
   const { duration, setDuration } = useContext(TimerContext);
   const [hasLoaded, setHasLoaded] = useState(false);
-  const [beepUrl, setBeepUrl] = useState('/beep.wav');
+  const [beepUrl, setBeepUrl] = useState('beep.wav');
   const [beepInterval, setBeepInterval] = useState(60);
   const [maxTime, setMaxTime] = useState(1800);
   const [isRunning, setIsRunning] = useState(false);
