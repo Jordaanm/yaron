@@ -8,7 +8,7 @@ interface TimerContextType {
 export const TimerContext = createContext<TimerContextType>({
   duration: 0,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setDuration: (duration: number) => {}
+  setDuration: () => {}
 });
 
 export const TimerProvider = TimerContext.Provider;
